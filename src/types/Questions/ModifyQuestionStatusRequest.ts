@@ -1,7 +1,7 @@
-import type { QuestionStatus } from "../Enums/QuestionsStatus";
+import type { ApplicationStatus } from "../Enums/ApplicationStatus";
 
 export interface ModifyQuestionStatusRequest {
     questionId:number
-    questionStatus: QuestionStatus
+    questionStatus: ApplicationStatus
     comments?: string
 }
