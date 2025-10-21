@@ -1,0 +1,71 @@
+:root {
+    --primary-bg-color: rgb(202, 199, 199);
+    --border-color: rgba(167, 164, 164, 0.767);
+    --primary-color: rgb(8, 59, 103);
+    --primary-dark-color: rgb(10, 52, 88);
+    --secondary-color: #e6edff;
+    --primary-border-color: #ee9c38;
+    --background-blur-color: rgb(174, 174, 174);
+    --primary-font-color: #ffffff;
+    --secondary-font-color: rgb(17, 17, 17);
+    --box-shadow-color: rgba(0, 0, 0, 0.1);
+    --pending-font-color: rgba(255, 115, 0, 0.792);
+    --success-font-color: rgb(2, 111, 2);
+    --reject-font-color: rgb(247, 8, 8);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+ margin: 0;
+}
+
+.dashboard-block-container {
+    padding: 0rem 1rem;
+}
+
+.dashboard-block-container h1 {
+    color: var(--primary-color);
+}
+
+.company-logo-new {
+    width: 15%;
+}
+
+@media (min-width:960px) {
+
+    .mobile-navbar,
+    .nav-bar-icon {
+        display: none;
+    }
+}
+
+@media (max-width:960px) {
+
+    .company-cover-image {
+        display: none;
+    }
+
+    .form-wrapper {
+        width: 100%;
+    }
+
+    .company-logo-new {
+        width: 25%;
+    }
+
+    .navbar-container div,
+    .navbar-container .button {
+        display: none;
+    }
+
+}
+
+@media (max-width:640px) {
+    h1 {
+        font-size: 1.625rem;
+    }
+}
