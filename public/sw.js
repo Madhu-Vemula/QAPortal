@@ -1,25 +1,27 @@
-self.addEventListener("push", (event) => {
-  let data = {};
+self.addEventListener('push', event => {
+  console.log('Push event received:', event);
+
+  let data;
   try {
-    data = event.data.json();
-    console.log("Push event data:", data);
-  } catch {
-    data = { title: "Notification", body: event.data.text() };
+    data = event.data ? event.data.json() : { title: 'Default Title', body: 'No payload received' };
+    console.log('Raw push data:', data);
+
+    // Normalize keys
+    const title = data.title || data.Title || 'Notification';
+    const body = data.body || data.Body || 'You have a new notification';
+    const icon = data.icon || '/vite.svg';
+
+    const options = { body, icon };
+
+    event.waitUntil(self.registration.showNotification(title, options));
+  } catch (error) {
+    console.error('Error parsing push data:', error);
+    const options = { body: 'Failed to parse notification data' };
+    event.waitUntil(self.registration.showNotification('Error', options));
   }
-
-  const options = {
-    body: data.body,
-    icon: data.icon || "/vite.svg",
-    data: { url: data.url || "/" },
-  };
-
-  event.waitUntil(
-    self.registration.showNotification(data.title, options)
-  );
 });
 
-self.addEventListener("notificationclick", (event) => {
+self.addEventListener('notificationclick', event => {
   event.notification.close();
-  const url = event.notification.data.url;
-  event.waitUntil(clients.openWindow(url));
+  event.waitUntil(clients.openWindow('/')); // Customize URL if needed
 });
