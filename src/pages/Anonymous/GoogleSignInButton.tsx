@@ -4,12 +4,15 @@ import { useGoogleLoginMutation } from '../../services/authService';
 import { RoleType } from '../../types/Enums/RoleType';
 import { RoleConstants } from '../../types/RoleConstants';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../store/authSlice';
 export interface GoogleAuthRequest {
     token: string;
 }
 const GoogleSignInButton: React.FC = () => {
     const [googleLogin] = useGoogleLoginMutation();
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const handleSuccess = async (credentialResponse: any) => {
         const token: string = credentialResponse?.credential;
@@ -19,11 +22,7 @@ const GoogleSignInButton: React.FC = () => {
             const request: GoogleAuthRequest = { token };
             const result = await googleLogin(request).unwrap();
 
-            localStorage.setItem('token', result.data.token);
-            localStorage.setItem('userRole', RoleType[result.data.role].toLowerCase());
-            localStorage.setItem('userEmail', result.data.email);
-            localStorage.setItem('isApproved', result.data.isApproved.toString());
-            localStorage.setItem('userName', result.data.firstName + " " + result.data.lastName);
+            dispatch(setToken(result.data.token))
 
             switch (result.data.role) {
                 case RoleType.ADMIN:

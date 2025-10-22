@@ -1,18 +1,20 @@
 import { useState } from "react";
 import Navbar from "../../components/common/Navbar";
 import DashboardBlock from "../../components/layout/DashboardBlock";
-import { getIsApprovedFromLocal, getUserRoleFromLocal } from "../../utils/userUtils";
 import PostQuestionForm from "./PostQuestionForm";
 import { useGetAllQuestionsQuery } from "../../services/questionService";
 import Loader from "../../components/common/Loader";
 import QuestionCard from "./QuestionCard";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { convertRoleToString } from "../../utils/userUtils";
 
 
 const QuestionsList = () => {
-
-    const userRole = getUserRoleFromLocal();
-    const isApproved = getIsApprovedFromLocal();
+const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+        const userRole = convertRoleToString(numericRole);
+      const isApproved=useSelector((state:RootState)=>state.auth.user?.isApproved);
     const [showPostQuestionForm, setShowPostQuestionForm] = useState<boolean>(false);
     const { data: allQuestionsListResponse, isLoading } = useGetAllQuestionsQuery();
     const allQuestionsList = allQuestionsListResponse?.data;

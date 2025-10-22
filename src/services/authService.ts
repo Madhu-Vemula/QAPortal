@@ -5,6 +5,7 @@ import type { LoginResponseData } from "../types/Login/LoginResponse";
 // import type { SignUpFormResponse } from "../types/SignUp/SignUpFormResponse";
 import type { GoogleAuthRequest } from "../pages/Anonymous/GoogleSignInButton";
 import rootApi from "./rootService";
+import type { UserData } from "../types/User/user";
 
 const authUrl = "auth"
 
@@ -32,10 +33,17 @@ export const authApi = rootApi.injectEndpoints({
         body: request,
       }),
     }),
+    getCurrentUser: builder.query<ApiResponse<UserData>, void>({
+      query: () => ({
+        url: `${authUrl}/me`,
+        method: "GET"
+      }),
+      providesTags: ["User"],
+    })
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGoogleLoginMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation, useGoogleLoginMutation, useGetCurrentUserQuery } = authApi;
 
 
 // const authApi = rootApi.injectEndpoints({

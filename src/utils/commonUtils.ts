@@ -3,6 +3,7 @@ import { ApplicationStatus } from "../types/Enums/ApplicationStatus";
 
 export const convertFirstLetterToUpperCase = (value: string): string => 
     value.charAt(0).toUpperCase() + value.slice(1);
+
 export const getStatusClass = (status: ApplicationStatus): string => {
   switch (status) {
     case ApplicationStatus.Approved:

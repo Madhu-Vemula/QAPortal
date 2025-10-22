@@ -1,7 +1,11 @@
 import { Navigate } from "react-router-dom";
 import type { ProtectedRouteProps } from "../types/protectedRoute";
-import { getUserEmailFromLocal, getUserRoleFromLocal } from "../utils/userUtils";
+
 import UnAuthorized from "../pages/Error/UnAuthorized";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
+import { convertRoleToString } from "../utils/userUtils";
+
 /**
  * @function ProtectedRoute
  * @description Protects a route based on the user's role stored in local storage.
@@ -9,8 +13,9 @@ import UnAuthorized from "../pages/Error/UnAuthorized";
  * @returns {React.JSX.Element}
  */
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }): React.JSX.Element => {
-    const userEmail = getUserEmailFromLocal()
-    const userRole = getUserRoleFromLocal()
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole=convertRoleToString(numericRole)
+    const userEmail = useSelector((state: RootState) => state.auth.user?.email);
     if (!userEmail) return <Navigate to="/login" />;
 
     if (userRole !== role) return <UnAuthorized />;

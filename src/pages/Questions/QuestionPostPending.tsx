@@ -3,16 +3,19 @@ import Loader from "../../components/common/Loader";
 import Navbar from "../../components/common/Navbar";
 import DashboardBlock from "../../components/layout/DashboardBlock";
 import {  useGetPendingQuestionPostQuery, useModifyQuestionPostApplicationMutation } from "../../services/adminService";
-import { getUserRoleFromLocal } from "../../utils/userUtils";
 import CustomTable from "../../components/layout/CustomTable";
 import Modal from "../../components/layout/CustomModal";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
 import { mapActionTypeToNumber } from "../../utils/adminUtils";
 import type { ModifyQuestionPostRequest, PendingQuestionPost } from "../../types/Questions/PendingQuestion";
 import { getPendingQuestionPostColumns } from "./PendingQuestionPostColumns";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { convertRoleToString } from "../../utils/userUtils";
 
 const QuestionPostPending = () => {
-    const userRole = getUserRoleFromLocal();
+const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+        const userRole = convertRoleToString(numericRole);
     const [modifyQuestionPostApplication] = useModifyQuestionPostApplicationMutation();
     const { data: pendingQuestionPostResponse, isLoading } = useGetPendingQuestionPostQuery();
     const pendingQuestionPostList = pendingQuestionPostResponse?.data || [];

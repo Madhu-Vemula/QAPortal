@@ -7,4 +7,6 @@ export interface UserData {
   email: string;
   role: RoleType;
   passwordHash: string;
+  isApproved:boolean
 }
+

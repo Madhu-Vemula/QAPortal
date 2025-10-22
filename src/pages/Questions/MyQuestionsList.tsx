@@ -1,14 +1,17 @@
+import { useSelector } from "react-redux";
 import Loader from "../../components/common/Loader";
 import Navbar from "../../components/common/Navbar";
 import DashboardBlock from "../../components/layout/DashboardBlock";
 import { useGetQuestionsByUserQuery } from "../../services/questionService";
 import type { QuestionResponseData } from "../../types/Questions/QuestionPostApplicationResponse";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
-import { getUserRoleFromLocal } from "../../utils/userUtils";
 import QuestionCard from "./QuestionCard";
+import type { RootState } from "../../store/store";
+import { convertRoleToString } from "../../utils/userUtils";
 
 const MyQuestionsList = () => {
-    const userRole = getUserRoleFromLocal()
+     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+             const userRole = convertRoleToString(numericRole);
     const { data: questionsByUserResponse, isLoading } = useGetQuestionsByUserQuery();
     const questionsList = questionsByUserResponse?.data || [];
 

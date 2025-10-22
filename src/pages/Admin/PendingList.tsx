@@ -3,16 +3,19 @@ import Loader from "../../components/common/Loader";
 import Navbar from "../../components/common/Navbar";
 import DashboardBlock from "../../components/layout/DashboardBlock";
 import { useGetPendingAdminsQuery, useModifyApplicationMutation } from "../../services/adminService";
-import { getUserRoleFromLocal } from "../../utils/userUtils";
 import CustomTable from "../../components/layout/CustomTable";
 import type { ModifyAdminStatusRequest, PendingAdmin } from "../../types/Admin/PendingAdmin";
 import { getPendingAdminsColumns } from "./PendingAdminsColumns";
 import Modal from "../../components/layout/CustomModal";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
 import { mapActionTypeToNumber } from "../../utils/adminUtils";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { convertRoleToString } from "../../utils/userUtils";
 
 const PendingList = () => {
-    const userRole = getUserRoleFromLocal();
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole = convertRoleToString(numericRole);
     const [modifyAdminApplication] = useModifyApplicationMutation();
     const { data: pendingAdminsListResponse, isLoading } = useGetPendingAdminsQuery();
     const pendingAdminList = pendingAdminsListResponse?.data || [];
@@ -61,7 +64,7 @@ const PendingList = () => {
                 <CustomTable
                     data={pendingAdminList}
                     columns={memoizedPendingAdminsColumns} />
-                    
+
             </DashboardBlock>
             {showPendingAdminModal && (
                 <Modal

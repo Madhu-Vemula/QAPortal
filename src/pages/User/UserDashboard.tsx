@@ -1,6 +1,5 @@
 import { useState, type JSX } from "react";
 import DashboardBlock from "../../components/layout/DashboardBlock";
-import { getIsApprovedFromLocal, getUserRoleFromLocal } from "../../utils/userUtils";
 import Navbar from "../../components/common/Navbar";
 import AdminForm from "./AdminForm";
 import { useGetAdminApplicationByUserIdQuery } from "../../services/adminService";
@@ -10,11 +9,15 @@ import QuestionForm from "./QuestionForm";
 import { useGetQuestionPostApplicationQuery } from "../../services/questionService";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
 // import SubscribeButton from "../Anonymous/SubscribeButton";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { convertRoleToString } from "../../utils/userUtils";
 
 
 const UserDashboard = (): JSX.Element => {
-  const userRole = getUserRoleFromLocal();
-  const isApproved = getIsApprovedFromLocal();
+ const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+         const userRole = convertRoleToString(numericRole);
+  const isApproved=useSelector((state:RootState)=>state.auth.user?.isApproved)
   const { data: adminApplicationResponse, isLoading: adminApplicationLoading } = useGetAdminApplicationByUserIdQuery();
   const { data: questionPostApplicationResponse, isLoading: QuestionPostApplicationLoading } = useGetQuestionPostApplicationQuery();
 

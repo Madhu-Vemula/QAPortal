@@ -3,19 +3,23 @@ import ProtectedRoute from "./ProtectedRoute";
 import NotFound from "../pages/Error/NotFound";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { protectedRoutes } from "./routeConfig";
-import { getUserEmailFromLocal, getUserRoleFromLocal } from "../utils/userUtils";
 import { RoleConstants } from "../types/RoleConstants";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
+import { convertRoleToString } from "../utils/userUtils";
 /**
  * @function AppRoutes
  * @description Defines all application routes with role-based protection and corresponding components.
  * @returns {React.JSX.Element}
  */
 
+
 const AppRoutes: React.FC = (): React.JSX.Element => {
     const navigate = useNavigate();
-    const userEmail = getUserEmailFromLocal();
-    const userRole = getUserRoleFromLocal();
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole = convertRoleToString(numericRole);
+    const userEmail = useSelector((state: RootState) => state.auth.user?.email);
 
     const dashboardPath =
         userRole === RoleConstants.ADMIN

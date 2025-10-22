@@ -22,7 +22,8 @@ const UserForm = (props: UserFormProps) => {
             lastName: '',
             email: '',
             role: RoleType.NONE,
-            passwordHash: ''
+            passwordHash: '',
+            isApproved:false
         }
     );
 

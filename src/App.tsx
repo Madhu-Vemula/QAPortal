@@ -1,7 +1,5 @@
-import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
-import { Provider } from "react-redux";
-import { store } from "./store/store";
+import {  useSelector } from "react-redux";
 import "../src/styles/login-form.css"
 import "../src/styles/buttons.css"
 import "../src/styles/form-container.css"
@@ -13,45 +11,32 @@ import "../src/styles/not-found.css"
 import "../src/styles/custom-table.css"
 import "../src/styles/card.css"
 import "../src/styles/google-login.css"
-import { ToastContainer } from "react-toastify";
-
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useEffect } from "react";
+import { useGetCurrentUserQuery } from "./services/authService";
+import type { RootState } from "./store/store";
 
 function App() {
-
+  const token = useSelector((state: RootState) => state.auth.token);
+  const { refetch } = useGetCurrentUserQuery(undefined, {
+    skip: !token,
+  });
   useEffect(() => {
     document.title = "Q&A Portal";
+    if (token) refetch();
     if ("serviceWorker" in navigator) {
-    window.addEventListener("load", async () => {
-      try {
-        const registration = await navigator.serviceWorker.register("/sw.js");
-        console.log("Service Worker registered:", registration);
-      } catch (err) {
-        console.error("Service Worker registration failed:", err);
-      }
-    });
-  }
-}, []);
+      window.addEventListener("load", async () => {
+        try {
+          const registration = await navigator.serviceWorker.register("/sw.js");
+          console.log("Service Worker registered:", registration);
+        } catch (err) {
+          console.error("Service Worker registration failed:", err);
+        }
+      });
+    }
+  }, [token, refetch]);
 
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          <AppRoutes />
-        </GoogleOAuthProvider>
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop
-          pauseOnHover
-          closeOnClick
-          draggable
-          theme="colored"
-        />
-      </BrowserRouter>
-    </Provider>
+    <AppRoutes />
   )
 }
 

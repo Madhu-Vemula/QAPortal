@@ -1,5 +1,4 @@
 import Navbar from "../../components/common/Navbar";
-import { getUserRoleFromLocal } from "../../utils/userUtils";
 import DashboardBlock from "../../components/layout/DashboardBlock";
 import UsersList from "../User/UsersList";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
@@ -7,6 +6,9 @@ import { useState } from "react";
 import UserForm from "../User/UserForm";
 // import SubscribeButton from "../Anonymous/SubscribeButton";
 // import SendNotificationButton from "../Anonymous/SendNotificationButton";
+import type { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { convertRoleToString } from "../../utils/userUtils";
 
 
 /**
@@ -16,7 +18,8 @@ import UserForm from "../User/UserForm";
  * @returns {React.JSX.Element} JSX element representing the dashboard.
  */
 const AdminDashboard: React.FC = (): React.JSX.Element => {
-    const userRole = getUserRoleFromLocal()
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole = convertRoleToString(numericRole);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const handleAddUser = () => {
         setIsModalOpen(true);
@@ -39,7 +42,7 @@ const AdminDashboard: React.FC = (): React.JSX.Element => {
                 <UserForm
                     initialUserData={null}
                     onClose={() => setIsModalOpen(false)}
-                    onSubmit={() => {setIsModalOpen(false)}}
+                    onSubmit={() => { setIsModalOpen(false) }}
                 />
             )}
         </>

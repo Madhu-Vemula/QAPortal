@@ -1,11 +1,14 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import palTechLogoNew from "../../assets/images/paltech_logo_new.svg";
-import { clearUserLocal, getUserNameFromLocal, getUserRoleFromLocal } from "../../utils/userUtils";
 import React, { useState } from "react";
 import { RoleConstants } from "../../types/RoleConstants";
 import navCrossIcon from "../../assets/icons/cross-icon.png";
 import navBarIcon from "../../assets/icons/nav-bar-icon.svg";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { logout } from "../../store/authSlice";
+import { convertRoleToString } from "../../utils/userUtils";
 
 /** 
  * @description
@@ -15,9 +18,11 @@ import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
  * @returns {React.JSX.Element} The rendered Navbar component.
  */
 const Navbar: React.FC = (): React.JSX.Element => {
-    const userRole = getUserRoleFromLocal();
-    const userName = getUserNameFromLocal();
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole = convertRoleToString(numericRole);
+    const userName = useSelector((state: RootState) => state.auth.user?.firstName);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [toggleNavBar, setToggleNavBar] = useState<boolean>(false);
 
     /**
@@ -25,7 +30,7 @@ const Navbar: React.FC = (): React.JSX.Element => {
      * Clears user session data and navigates to the login page.
      */
     const logOutUser = (): void => {
-        clearUserLocal();
+        dispatch(logout())
         navigate("/");
     };
 
@@ -67,16 +72,16 @@ const Navbar: React.FC = (): React.JSX.Element => {
                 </div>
             </div>
             <div className={`mobile-navbar ${!toggleNavBar && 'hide-nav-bar'}`}>
-               <NavLink to={`/${userRole}/home`} className="nav-link mobile-nav-link">Home</NavLink>
-                    {userRole == RoleConstants.ADMIN && (
-                        <>
-                            <NavLink to={`/${userRole}/pending-list`} className="nav-link mobile-nav-link">Admin Approval List</NavLink>
-                            <NavLink to={`/${userRole}/question-post-pending-list`} className="nav-link mobile-nav-link">Question Approval List</NavLink>
-                        </>
-                    )}
-                    <NavLink to={`/${userRole}/questions-list`} className="nav-link mobile-nav-link">Questions List</NavLink>
-                    <NavLink to={`/${userRole}/my-questions`} className="nav-link mobile-nav-link">My Questions</NavLink>
-                    <NavLink to={`/${userRole}/my-answers`} className="nav-link mobile-nav-link">My Answers</NavLink>
+                <NavLink to={`/${userRole}/home`} className="nav-link mobile-nav-link">Home</NavLink>
+                {userRole == RoleConstants.ADMIN && (
+                    <>
+                        <NavLink to={`/${userRole}/pending-list`} className="nav-link mobile-nav-link">Admin Approval List</NavLink>
+                        <NavLink to={`/${userRole}/question-post-pending-list`} className="nav-link mobile-nav-link">Question Approval List</NavLink>
+                    </>
+                )}
+                <NavLink to={`/${userRole}/questions-list`} className="nav-link mobile-nav-link">Questions List</NavLink>
+                <NavLink to={`/${userRole}/my-questions`} className="nav-link mobile-nav-link">My Questions</NavLink>
+                <NavLink to={`/${userRole}/my-answers`} className="nav-link mobile-nav-link">My Answers</NavLink>
                 <div className="nav-logout-container">
                     <button type="button" title="logout" className="button logout-btn" onClick={() => logOutUser()}>
                         Log out

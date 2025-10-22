@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import Navbar from "../../components/common/Navbar";
 import DashboardBlock from "../../components/layout/DashboardBlock";
 import { useGetQuestionQuery } from "../../services/questionService";
-import { getIsApprovedFromLocal, getUserRoleFromLocal } from "../../utils/userUtils";
 import QuestionCard from "./QuestionCard";
 import Loader from "../../components/common/Loader";
 import { useState } from "react";
@@ -12,10 +11,14 @@ import AnswerCard from "../Answers/AnswerCard";
 import type { AnswerResponse } from "../../types/Answers/AnswerPostApplicationResponse";
 import { ApplicationStatus } from "../../types/Enums/ApplicationStatus";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { convertRoleToString } from "../../utils/userUtils";
 
 const QuestionWithAnswers = () => {
-    const userRole = getUserRoleFromLocal();
-    const isApproved = getIsApprovedFromLocal();
+  const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+          const userRole = convertRoleToString(numericRole);
+      const isApproved=useSelector((state:RootState)=>state.auth.user?.isApproved);
     const { id } = useParams<{ id: string }>();
     const parsedQuestionId = parseInt(id ?? "");
     const { data: questionResponse } = useGetQuestionQuery(parsedQuestionId);
