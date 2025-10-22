@@ -18,7 +18,7 @@ const GoogleSignInButton: React.FC = () => {
 
         try {
 
-            const result = await googleLogin(token).unwrap();
+            const result = await googleLogin({token}).unwrap();
           
             localStorage.setItem('token', result.data.token);
             localStorage.setItem('userRole', RoleType[result.data.role].toLowerCase());
