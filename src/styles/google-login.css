@@ -1,0 +1,30 @@
+.google-login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.google-login-container iframe,
+.google-login-container div[role="button"] {
+  transform: scale(1.2);
+  transform-origin: center;
+  min-width: 300px !important;
+  height: 50px !important;
+  box-sizing: border-box;
+}
+
+.google-login-container div[role="button"] {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* For smaller screens */
+@media (max-width: 600px) {
+  .google-login-container iframe,
+  .google-login-container div[role="button"] {
+    transform: scale(1.0);
+    min-width: 200px !important;
+    height: 45px !important;
+  }
+}

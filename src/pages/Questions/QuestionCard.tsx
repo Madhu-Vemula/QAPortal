@@ -141,7 +141,7 @@ const QuestionCard = (props: QuestionCardProps) => {
                 </div>
 
             )}
-            {(question.status == ApplicationStatus.Pending && isQuestionsListTab) && (
+            {(question.status == (ApplicationStatus.Pending) ||question.status== ApplicationStatus.None && isQuestionsListTab) && (
                 <div className="button-group">
                     <button className="button submit-btn" onClick={handleApproveQuestion}>Approve</button>
                     <button className="button remove-btn" onClick={handleRejectQuestion}>Reject</button>

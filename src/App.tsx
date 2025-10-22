@@ -12,12 +12,14 @@ import "../src/styles/custom-modal.css"
 import "../src/styles/not-found.css"
 import "../src/styles/custom-table.css"
 import "../src/styles/card.css"
+import "../src/styles/google-login.css"
 import { ToastContainer } from "react-toastify";
+
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useEffect } from "react";
 
 function App() {
-  
+
   useEffect(() => {
     document.title = "Q&A Portal";
     if ("serviceWorker" in navigator) {

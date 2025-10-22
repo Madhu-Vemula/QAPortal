@@ -5,8 +5,8 @@ import UsersList from "../User/UsersList";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
 import { useState } from "react";
 import UserForm from "../User/UserForm";
-import SubscribeButton from "../Anonymous/SubscribeButton";
-import SendNotificationButton from "../Anonymous/SendNotificationButton";
+// import SubscribeButton from "../Anonymous/SubscribeButton";
+// import SendNotificationButton from "../Anonymous/SendNotificationButton";
 
 
 /**
@@ -31,8 +31,8 @@ const AdminDashboard: React.FC = (): React.JSX.Element => {
                 <button className="button submit-btn" onClick={() => { handleAddUser() }}>
                     Add User
                 </button>
-                <SubscribeButton />
-                <SendNotificationButton />
+                {/* <SubscribeButton />
+                <SendNotificationButton /> */}
                 <UsersList />
             </DashboardBlock>
             {isModalOpen && (

@@ -41,12 +41,11 @@ const GoogleSignInButton: React.FC = () => {
     };
 
     return (
-        <div className="flex justify-center mt-4">
+        <div className="google-login-container">
             <GoogleLogin
                 useOneTap={false}
                 onSuccess={handleSuccess}
                 onError={() => console.log('Google login failed')}
-
             />
         </div>
     );
