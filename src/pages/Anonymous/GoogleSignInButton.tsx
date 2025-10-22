@@ -5,21 +5,23 @@ import { RoleType } from '../../types/Enums/RoleType';
 import { RoleConstants } from '../../types/RoleConstants';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-
+export interface GoogleAuthRequest {
+    token: string;
+}
 const GoogleSignInButton: React.FC = () => {
     const [googleLogin] = useGoogleLoginMutation();
     const navigate = useNavigate();
 
     const handleSuccess = async (credentialResponse: any) => {
-        const token = credentialResponse?.credential;
+        const token: string = credentialResponse?.credential;
         const decoded: any = jwtDecode(token);
         console.log("Decoded JWT:", decoded);
         if (!token) return;
 
         try {
+            const request: GoogleAuthRequest = { token };
+            const result = await googleLogin(request).unwrap();
 
-            const result = await googleLogin({token}).unwrap();
-          
             localStorage.setItem('token', result.data.token);
             localStorage.setItem('userRole', RoleType[result.data.role].toLowerCase());
             localStorage.setItem('userEmail', result.data.email);

@@ -1,8 +1,9 @@
-// import type { ApiResponse } from "../types/ApiResponse";
+import type { ApiResponse } from "../types/ApiResponse";
 // import type { LoginCredentials } from "../types/Login/LoginCredentials";
-// import type { LoginResponseData } from "../types/Login/LoginResponse";
+import type { LoginResponseData } from "../types/Login/LoginResponse";
 // import type { SignUpForm } from "../types/SignUp/signUpForm";
 // import type { SignUpFormResponse } from "../types/SignUp/SignUpFormResponse";
+import type { GoogleAuthRequest } from "../pages/Anonymous/GoogleSignInButton";
 import rootApi from "./rootService";
 
 const authUrl = "auth"
@@ -24,11 +25,11 @@ export const authApi = rootApi.injectEndpoints({
         body,
       }),
     }),
-    googleLogin: builder.mutation({
-      query: (token) => ({
+    googleLogin: builder.mutation<ApiResponse<LoginResponseData>, GoogleAuthRequest>({
+      query: (request) => ({
         url: `${authUrl}/google`,
         method: 'POST',
-        body: { token },
+        body: request,
       }),
     }),
   }),
