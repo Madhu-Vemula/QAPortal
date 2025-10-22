@@ -9,6 +9,7 @@ import { ApplicationStatus } from "../../types/Enums/ApplicationStatus";
 import QuestionForm from "./QuestionForm";
 import { useGetQuestionPostApplicationQuery } from "../../services/questionService";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
+import SubscribeButton from "../Anonymous/SubscribeButton";
 
 
 const UserDashboard = (): JSX.Element => {
@@ -57,6 +58,7 @@ const UserDashboard = (): JSX.Element => {
           >
             Apply for posting questions
           </button>
+          <SubscribeButton />
         </div>
         {showAdminForm && (
           <AdminForm

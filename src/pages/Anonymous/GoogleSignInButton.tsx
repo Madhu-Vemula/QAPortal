@@ -4,7 +4,6 @@ import { useGoogleLoginMutation } from '../../services/authService';
 import { RoleType } from '../../types/Enums/RoleType';
 import { RoleConstants } from '../../types/RoleConstants';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
 export interface GoogleAuthRequest {
     token: string;
 }
@@ -14,8 +13,6 @@ const GoogleSignInButton: React.FC = () => {
 
     const handleSuccess = async (credentialResponse: any) => {
         const token: string = credentialResponse?.credential;
-        const decoded: any = jwtDecode(token);
-        console.log("Decoded JWT:", decoded);
         if (!token) return;
 
         try {

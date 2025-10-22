@@ -14,8 +14,24 @@ import "../src/styles/custom-table.css"
 import "../src/styles/card.css"
 import { ToastContainer } from "react-toastify";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useEffect } from "react";
 
 function App() {
+  
+  useEffect(() => {
+    document.title = "Q&A Portal";
+    if ("serviceWorker" in navigator) {
+    window.addEventListener("load", async () => {
+      try {
+        const registration = await navigator.serviceWorker.register("/sw.js");
+        console.log("Service Worker registered:", registration);
+      } catch (err) {
+        console.error("Service Worker registration failed:", err);
+      }
+    });
+  }
+}, []);
+
   return (
     <Provider store={store}>
       <BrowserRouter>
