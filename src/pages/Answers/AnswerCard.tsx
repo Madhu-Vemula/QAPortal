@@ -85,7 +85,7 @@ const AnswerCard = (props: AnswerCardProps) => {
                         </span>
                         <div className="meta-right-column">
                             <span className="user-info">
-                                Replied by: {userData?.firstName} {userData?.lastName}
+                                Replied by: {userData?.firstName || userData?.lastName ? `${userData?.firstName} ${userData?.lastName}` : "Deleted User"}
                             </span>
                         </div>
                     </div>

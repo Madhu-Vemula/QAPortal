@@ -120,7 +120,7 @@ const QuestionCard = (props: QuestionCardProps) => {
                                 {question.viewCount} view{question.viewCount !== 1 ? 's' : ''}
                             </span>
                             <span className="user-info">
-                                Posted by: {userData?.firstName} {userData?.lastName}
+                                Posted by: {userData?.firstName || userData?.lastName ? `${userData?.firstName} ${userData?.lastName}` : "Deleted User"}
                             </span>
                         </div>
                     </div>
@@ -141,7 +141,7 @@ const QuestionCard = (props: QuestionCardProps) => {
                 </div>
 
             )}
-            {(question.status == (ApplicationStatus.Pending) ||question.status== ApplicationStatus.None && isQuestionsListTab) && (
+            {(question.status == (ApplicationStatus.Pending) || question.status == ApplicationStatus.None && isQuestionsListTab) && (
                 <div className="button-group">
                     <button className="button submit-btn" onClick={handleApproveQuestion}>Approve</button>
                     <button className="button remove-btn" onClick={handleRejectQuestion}>Reject</button>
