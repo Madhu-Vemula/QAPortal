@@ -23,7 +23,6 @@ const GoogleSignInButton: React.FC = () => {
         try {
             const request: GoogleAuthRequest = { token };
             const result = await googleLogin(request).unwrap();
-            await subscribeToNotification()
             dispatch(setToken(result.data.token))
 
             switch (result.data.role) {
@@ -36,6 +35,7 @@ const GoogleSignInButton: React.FC = () => {
                 default:
                     navigate('/');
             }
+            await subscribeToNotification()
         } catch (error) {
             console.error('Google Login Failed:', error);
         }
