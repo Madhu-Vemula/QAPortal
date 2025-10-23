@@ -1,22 +1,24 @@
-import { useAddSubscriptionMutation } from "../../services/notificationService";
+import { useAddSubscriptionMutation } from "../services/notificationService";
 
 
-const SubscribeButton = () => {
-  const [addSubscription, { isLoading }] = useAddSubscriptionMutation();
-  const handleSubscribe = async () => {
+const useSubscribeToNotification = () => {
+  const [addSubscription] = useAddSubscriptionMutation();
+
+  const subscribeToNotification = async () => {
     const registration = await navigator.serviceWorker.ready;
-    
+
     const permission = await Notification.requestPermission();
     if (permission !== "granted") {
-      return alert("Please enable notifications to subscribe");
+      alert("Please enable notifications to subscribe");
+      return;
     }
+
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: import.meta.env.VITE_VAPID_PUBLIC_KEY,
     });
 
     const subJson = subscription.toJSON();
-
     const pushSubscription = {
       endpoint: subJson.endpoint || "",
       expirationTime: subJson.expirationTime
@@ -29,18 +31,10 @@ const SubscribeButton = () => {
     };
 
     await addSubscription(pushSubscription);
+    console.log("Subscription saved successfully!");
   };
 
-
-
-  return (
-    <button
-      onClick={handleSubscribe}
-      disabled={isLoading}
-    >
-      {isLoading ? "Subscribing..." : "Subscribe to Notifications"}
-    </button>
-  );
+  return subscribeToNotification;
 };
 
-export default SubscribeButton;
+export default useSubscribeToNotification;

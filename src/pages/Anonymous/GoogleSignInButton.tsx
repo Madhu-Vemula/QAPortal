@@ -6,6 +6,7 @@ import { RoleConstants } from '../../types/RoleConstants';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../store/authSlice';
+import useSubscribeToNotification from '../../hooks/useSubscribeToNotification';
 export interface GoogleAuthRequest {
     token: string;
 }
@@ -13,6 +14,7 @@ const GoogleSignInButton: React.FC = () => {
     const [googleLogin] = useGoogleLoginMutation();
     const navigate = useNavigate();
     const dispatch = useDispatch()
+    const subscribeToNotification = useSubscribeToNotification();
 
     const handleSuccess = async (credentialResponse: any) => {
         const token: string = credentialResponse?.credential;
@@ -21,7 +23,7 @@ const GoogleSignInButton: React.FC = () => {
         try {
             const request: GoogleAuthRequest = { token };
             const result = await googleLogin(request).unwrap();
-
+            await subscribeToNotification()
             dispatch(setToken(result.data.token))
 
             switch (result.data.role) {
