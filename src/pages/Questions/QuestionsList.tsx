@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/common/Navbar";
 import DashboardBlock from "../../components/layout/DashboardBlock";
 import PostQuestionForm from "./PostQuestionForm";
@@ -9,15 +9,26 @@ import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import { convertRoleToString } from "../../utils/userUtils";
-
+import { ApplicationStatus } from "../../types/Enums/ApplicationStatus";
+import type { QuestionResponseData } from "../../types/Questions/QuestionPostApplicationResponse";
+import { RoleConstants } from "../../types/RoleConstants";
 
 const QuestionsList = () => {
-const numericRole = useSelector((state: RootState) => state.auth.user?.role);
-        const userRole = convertRoleToString(numericRole);
-      const isApproved=useSelector((state:RootState)=>state.auth.user?.isApproved);
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole = convertRoleToString(numericRole);
+    const isApproved = useSelector((state: RootState) => state.auth.user?.isApproved);
     const [showPostQuestionForm, setShowPostQuestionForm] = useState<boolean>(false);
     const { data: allQuestionsListResponse, isLoading } = useGetAllQuestionsQuery();
     const allQuestionsList = allQuestionsListResponse?.data;
+    const [filteredQuestionsList, setFilteredQuestionsList] = useState<QuestionResponseData[] | undefined>(undefined);
+    useEffect(() => {
+        if (userRole == RoleConstants.USER) {
+            const filteredQuestions = allQuestionsList?.filter((question) => question.status === ApplicationStatus.Approved);
+            setFilteredQuestionsList(filteredQuestions)
+        }
+        else setFilteredQuestionsList(allQuestionsList)
+    }, [allQuestionsList, setFilteredQuestionsList, ApplicationStatus])
+
     const postAQuestion = () => {
         setShowPostQuestionForm(true)
     }
@@ -38,10 +49,10 @@ const numericRole = useSelector((state: RootState) => state.auth.user?.role);
                             Post Question
                         </button>
                     )}
-                    {allQuestionsList?.length === 0 && (
+                    {filteredQuestionsList?.length === 0 && (
                         <h3>No questions available.</h3>
                     )}
-                    {allQuestionsList?.map((question) => (
+                    {filteredQuestionsList?.map((question) => (
                         <QuestionCard
                             key={question.id}
                             showModifyButtons={false}

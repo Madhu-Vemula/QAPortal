@@ -10,8 +10,8 @@ import type { RootState } from "../../store/store";
 import { convertRoleToString } from "../../utils/userUtils";
 
 const MyQuestionsList = () => {
-     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
-             const userRole = convertRoleToString(numericRole);
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole = convertRoleToString(numericRole);
     const { data: questionsByUserResponse, isLoading } = useGetQuestionsByUserQuery();
     const questionsList = questionsByUserResponse?.data || [];
 

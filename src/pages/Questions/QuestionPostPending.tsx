@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState, type ChangeEvent } from "react";
 import Loader from "../../components/common/Loader";
 import Navbar from "../../components/common/Navbar";
 import DashboardBlock from "../../components/layout/DashboardBlock";
-import {  useGetPendingQuestionPostQuery, useModifyQuestionPostApplicationMutation } from "../../services/adminService";
+import { useGetPendingQuestionPostQuery, useModifyQuestionPostApplicationMutation } from "../../services/adminService";
 import CustomTable from "../../components/layout/CustomTable";
 import Modal from "../../components/layout/CustomModal";
 import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
@@ -14,8 +14,8 @@ import type { RootState } from "../../store/store";
 import { convertRoleToString } from "../../utils/userUtils";
 
 const QuestionPostPending = () => {
-const numericRole = useSelector((state: RootState) => state.auth.user?.role);
-        const userRole = convertRoleToString(numericRole);
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole = convertRoleToString(numericRole);
     const [modifyQuestionPostApplication] = useModifyQuestionPostApplicationMutation();
     const { data: pendingQuestionPostResponse, isLoading } = useGetPendingQuestionPostQuery();
     const pendingQuestionPostList = pendingQuestionPostResponse?.data || [];
@@ -42,7 +42,7 @@ const numericRole = useSelector((state: RootState) => state.auth.user?.role);
             const requestData: ModifyQuestionPostRequest = {
                 id: initialQuestionPostData?.id,
                 questionStatus: mapActionTypeToNumber(actionType)
-            } 
+            }
             await modifyQuestionPostApplication(requestData).unwrap();
         }
         catch (error: any) {
@@ -64,7 +64,7 @@ const numericRole = useSelector((state: RootState) => state.auth.user?.role);
                 <CustomTable
                     data={pendingQuestionPostList}
                     columns={memoizedPendingQuestionPostColumns} />
-                    
+
             </DashboardBlock>
             {showPendingQuestionPostModal && (
                 <Modal

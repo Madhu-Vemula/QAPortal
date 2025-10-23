@@ -1,23 +1,29 @@
 import { useState, type ChangeEvent } from "react";
 import Modal from "../../components/layout/CustomModal";
 import { useApplyForAdminMutation } from "../../services/userService";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 interface AdminFormProps {
     closeAdminForm: () => void
 }
 export interface ApplyForAdminRequest {
+    userId: number,
     reason: string
 }
 const AdminForm = (props: AdminFormProps) => {
     const { closeAdminForm } = props;
-
+    const userId = useSelector((state: RootState) => state.auth.user?.id);
     const [reason, setReason] = useState<string>("")
     const [hasError, setHasError] = useState<boolean>(false);
     const [applyForAdmin] = useApplyForAdminMutation();
-    
+
     const handleSubmit = async () => {
         if (reason.length == 0) setHasError(true);
-        const request: ApplyForAdminRequest = { reason: reason };
+        if(!userId){
+            return;
+        }
+        const request: ApplyForAdminRequest = { userId, reason };
         try {
 
             await applyForAdmin(request).unwrap();

@@ -55,8 +55,8 @@ const UserDashboard = (): JSX.Element => {
             onClick={applyToPostQuestions}
             disabled={
               questionPostApplicationResponse?.data != null &&
-              (questionPostApplicationResponse.data.status === ApplicationStatus.Pending ||
-              isApproved)
+              (questionPostApplicationResponse.data.status === ApplicationStatus.Pending) ||
+              (isApproved)
             }
           >
             Apply for posting questions
