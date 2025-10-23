@@ -7,9 +7,13 @@ const useSubscribeToNotification = () => {
   const subscribeToNotification = async () => {
     const registration = await navigator.serviceWorker.ready;
 
-    const permission = await Notification.requestPermission();
+    let permission = Notification.permission;
+    if (permission === "default") {
+      permission = await Notification.requestPermission();
+    }
+
     if (permission !== "granted") {
-      alert("Please enable notifications to subscribe");
+      alert("Please subscribe to notification permission.");
       return;
     }
 
