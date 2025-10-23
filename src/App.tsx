@@ -26,7 +26,7 @@ function App() {
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", async () => {
         try {
-          const registration = await navigator.serviceWorker.register("/sw.js");
+           await navigator.serviceWorker.register("/sw.js");
         } catch (err) {
           console.error("Service Worker registration failed:", err);
         }
