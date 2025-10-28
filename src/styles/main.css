@@ -34,7 +34,11 @@ body {
 .company-logo-new {
     width: 15%;
 }
-
+.filter-container {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+}
 @media (min-width:960px) {
 
     .mobile-navbar,

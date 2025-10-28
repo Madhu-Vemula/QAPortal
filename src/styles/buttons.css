@@ -11,7 +11,11 @@
     color: var(--primary-font-color);
     margin-right: 5px;
 }
-
+.reply-btn {
+    background-color: var(--primary-color);
+    color: var(--primary-font-color);
+    border: 1px solid var(--secondary-color);
+}
 .remove-btn,
 .cancel-btn {
     background-color: var(--secondary-color);

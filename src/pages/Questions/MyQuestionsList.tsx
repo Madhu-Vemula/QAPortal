@@ -8,12 +8,16 @@ import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
 import QuestionCard from "./QuestionCard";
 import type { RootState } from "../../store/store";
 import { convertRoleToString } from "../../utils/userUtils";
+import FilterContainer from "../../components/common/FilterContainer";
+import { useState } from "react";
+import { ApplicationStatus } from "../../types/Enums/ApplicationStatus";
 
 const MyQuestionsList = () => {
     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
     const userRole = convertRoleToString(numericRole);
     const { data: questionsByUserResponse, isLoading } = useGetQuestionsByUserQuery();
     const questionsList = questionsByUserResponse?.data || [];
+    const [filteredQuestionsList, setFilteredQuestionsList] = useState<QuestionResponseData[]>(questionsList);
 
     if (isLoading) return <Loader />
     return (
@@ -22,10 +26,36 @@ const MyQuestionsList = () => {
             <DashboardBlock
                 title={`${convertFirstLetterToUpperCase(userRole)} Dashboard`}
             >
-                {questionsList.length == 0 ?
+                <FilterContainer>
+                    <div>
+                        <select onChange={(e) => {
+                            const statusFilter = e.target.value;
+                            if (statusFilter === "All") {
+                                setFilteredQuestionsList(questionsList);
+                            } else {
+                                const filteredQuestions = questionsList?.filter((question) => question.status.toString() === statusFilter);
+                                setFilteredQuestionsList(filteredQuestions);
+                            }
+                        }}>
+                            <option value="All">All</option>
+                            <option value={ApplicationStatus.Pending}>Pending</option>
+                            <option value={ApplicationStatus.Approved}>Approved</option>
+                            <option value={ApplicationStatus.Rejected}>Rejected</option>
+                        </select>
+                    </div>
+                    <input type="text" placeholder="Search questions..." onChange={(e) => {
+                        const searchTerm = e.target.value.toLowerCase();    
+                        const filteredQuestions = questionsList?.filter((question) =>
+                            question.title.toLowerCase().includes(searchTerm) ||
+                            question.content.toLowerCase().includes(searchTerm)
+                        );
+                        setFilteredQuestionsList(filteredQuestions);
+                    }} />
+                </FilterContainer>
+                {filteredQuestionsList.length == 0 ?
                     <h3>No data found</h3>
                     :
-                    (questionsList?.map((question: QuestionResponseData) => (
+                    (filteredQuestionsList?.map((question: QuestionResponseData) => (
                         <QuestionCard
                             key={question.id}
                             showModifyButtons={true}

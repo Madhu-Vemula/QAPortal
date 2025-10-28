@@ -27,7 +27,7 @@ export const baseQueryWithToast: typeof baseQuery = async (args, api, extraOptio
       const message = (result.data as any).message;
       const success = (result.data as any).success;
       if (success) {
-        toast.success(message || "Operation successful");
+        // toast.success(message || "Operation successful");
       } else {
         toast.error(message || "Operation failed");
       }

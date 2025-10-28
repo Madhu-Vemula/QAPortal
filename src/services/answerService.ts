@@ -28,6 +28,12 @@ const answerAPi = rootApi.injectEndpoints({
             }),
             providesTags:['Answer']
         }),
+        getReplyByAnswer: builder.query<ApiResponse<AnswerResponse[]>, number>({
+            query: (answerId) => ({
+                url: `questions/${answerId}/replies`,
+            }),
+            providesTags:['Answer']
+        }),
         postAnswer: builder.mutation<ApiResponse<AnswerResponse>, AnswerUploadRequest>({
             query: (data) => {
                 const { questionId, ...postData } = data
@@ -87,5 +93,6 @@ export const {
     usePostAnswerMutation,
     usePutAnswerMutation,
     useDeleteAnswerMutation,
-    usePostAnswerVoteMutation
+    usePostAnswerVoteMutation,
+    useLazyGetReplyByAnswerQuery
 } = answerAPi;

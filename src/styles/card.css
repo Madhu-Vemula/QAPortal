@@ -155,18 +155,28 @@
 .vote-count {
     font-weight: 600;
 }
+
 .vote-button.upvote:hover img {
-filter: brightness(0) saturate(100%) invert(19%) sepia(93%) saturate(2675%) hue-rotate(104deg) brightness(95%) contrast(92%);
+    filter: brightness(0) saturate(100%) invert(19%) sepia(93%) saturate(2675%) hue-rotate(104deg) brightness(95%) contrast(92%);
 }
 
 .vote-button.downvote:hover img {
-  filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7483%) hue-rotate(2deg) brightness(95%) contrast(112%);
+    filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7483%) hue-rotate(2deg) brightness(95%) contrast(112%);
 }
+
 .button-group {
     display: flex;
     gap: 0.8rem;
     margin-top: 1rem;
     flex-wrap: wrap;
+}
+
+.show-replies {
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 700;
 }
 
 @media (max-width: 768px) {

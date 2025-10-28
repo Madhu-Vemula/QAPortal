@@ -8,13 +8,36 @@ import { convertFirstLetterToUpperCase } from "../../utils/commonUtils";
 import AnswerCard from "./AnswerCard";
 import type { RootState } from "../../store/store";
 import { convertRoleToString } from "../../utils/userUtils";
+import FilterContainer from "../../components/common/FilterContainer";
+import { useState } from "react";
 
+const buildAnswerTree = (answers: AnswerResponse[]) => {
+    const map = new Map<number, AnswerResponse & { replies: AnswerResponse[] }>();
+    const roots: (AnswerResponse & { replies: AnswerResponse[] })[] = [];
+
+    answers.forEach(ans => {
+        map.set(ans.id, { ...ans, replies: [] });
+    });
+
+    answers.forEach(ans => {
+        if (ans.parentId) {
+            const parent = map.get(ans.parentId);
+            if (parent) parent.replies.push(map.get(ans.id)!);
+        } else {
+            roots.push(map.get(ans.id)!);
+        }
+    });
+
+    return roots;
+};
 
 const MyAnswersList = () => {
-const numericRole = useSelector((state: RootState) => state.auth.user?.role);
-        const userRole = convertRoleToString(numericRole);
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole = convertRoleToString(numericRole);
     const { data: answersByUserResponse, isLoading } = useGetAnswerByUserQuery();
     const answersList = answersByUserResponse?.data || [];
+    const [filteredAnswers, setFilteredAnswers] = useState<AnswerResponse[]>(answersList);
+    const answerTree = buildAnswerTree(filteredAnswers);
 
     if (isLoading) return <Loader />
     return (
@@ -23,17 +46,27 @@ const numericRole = useSelector((state: RootState) => state.auth.user?.role);
             <DashboardBlock
                 title={`${convertFirstLetterToUpperCase(userRole)} Dashboard`}
             >
-                {answersList.length == 0 ?
+                <FilterContainer>
+                    <input type="text" placeholder="Search answers..." onChange={(e) => {
+                        const searchTerm = e.target.value.toLowerCase();
+                        const filteredAnswers = answersList?.filter((answer) =>
+                            answer.content.toLowerCase().includes(searchTerm)
+                        );
+                        setFilteredAnswers(filteredAnswers);
+                    }} />
+                </FilterContainer>
+                {filteredAnswers.length == 0 ?
                     <h3>No data found</h3>
                     :
-                    (answersList?.map((answer: AnswerResponse) => (
+                    answerTree.map((answer) => (
                         <AnswerCard
                             key={answer.id}
                             showModifyButtons={true}
                             answer={answer}
                             myAnswersTab={true}
+                            depth={0}
                         />
-                    )))}
+                    ))}
             </DashboardBlock>
         </>
     );

@@ -12,6 +12,7 @@ import { convertRoleToString } from "../../utils/userUtils";
 import { ApplicationStatus } from "../../types/Enums/ApplicationStatus";
 import type { QuestionResponseData } from "../../types/Questions/QuestionPostApplicationResponse";
 import { RoleConstants } from "../../types/RoleConstants";
+import FilterContainer from "../../components/common/FilterContainer";
 
 const QuestionsList = () => {
     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
@@ -49,24 +50,56 @@ const QuestionsList = () => {
                             Post Question
                         </button>
                     )}
-                    {filteredQuestionsList?.length === 0 && (
-                        <h3>No questions available.</h3>
-                    )}
-                    {filteredQuestionsList?.map((question) => (
-                        <QuestionCard
-                            key={question.id}
-                            showModifyButtons={false}
-                            question={question}
-                            isQuestionsListTab={true}
-                        />
-                    ))}
+                    <>
+                        <FilterContainer>
+                            <div>
+                                <select onChange={(e) => {
+                                    const statusFilter = e.target.value;
+                                    if (statusFilter === "All") {
+                                        setFilteredQuestionsList(allQuestionsList);
+                                    }
+                                    else {
+                                        const filteredQuestions = allQuestionsList?.filter((question) =>
+                                            question.status.toString() === statusFilter
+                                        );
+                                        setFilteredQuestionsList(filteredQuestions);
+                                    }
+                                }}>
+                                    <option value="All">All</option>
+                                    <option value={ApplicationStatus.Pending}>Pending</option>
+                                    <option value={ApplicationStatus.Approved}>Approved</option>
+                                    <option value={ApplicationStatus.Rejected}>Rejected</option>
+                                </select>
+                            </div>
+                            <input type="text" placeholder="Search questions..." onChange={(e) => {
+                                const searchTerm = e.target.value.toLowerCase();
+                                const filteredQuestions = allQuestionsList?.filter((question) =>
+                                    question.title.toLowerCase().includes(searchTerm) ||
+                                    question.content.toLowerCase().includes(searchTerm)
+                                );
+                                setFilteredQuestionsList(filteredQuestions);
+                            }} />
+                        </FilterContainer>
+                    </>
                 </>
-            </DashboardBlock>
+                {filteredQuestionsList?.length === 0 && (
+                    <h3>No questions available.</h3>
+                )}
+                {filteredQuestionsList?.map((question) => (
+                    <QuestionCard
+                        key={question.id}
+                        showModifyButtons={false}
+                        question={question}
+                        isQuestionsListTab={true}
+                    />
+                ))}
+            </DashboardBlock >
             {showPostQuestionForm && (
                 <PostQuestionForm
                     closePostQuestionForm={() => setShowPostQuestionForm(false)}
                 />
-            )}
+            )
+            }
         </>
     )
 }

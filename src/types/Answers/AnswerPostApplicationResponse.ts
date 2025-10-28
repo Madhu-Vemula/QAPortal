@@ -6,5 +6,7 @@ export interface AnswerResponse {
     questionId: number,
     userId: number,
     upvoteCount: number,
-    downvoteCount: number
+    downvoteCount: number,
+    parentId: number;
+    replies?: AnswerResponse[];
 }

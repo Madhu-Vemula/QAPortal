@@ -6,7 +6,8 @@ import type { AnswerResponse } from "../../types/Answers/AnswerPostApplicationRe
 interface AnswerPostFormProps {
     questionId: number,
     closePostAnswerForm: () => void,
-    initialData?: AnswerResponse
+    initialData?: AnswerResponse,
+    answerId?: number
 }
 
 export interface AnswerUploadRequest {
@@ -17,7 +18,7 @@ export interface AnswerUploadRequest {
 
 
 const AnswerForm = (props: AnswerPostFormProps) => {
-    const { closePostAnswerForm, questionId, initialData } = props;
+    const { closePostAnswerForm, questionId, initialData, answerId } = props;
     const [answerForm, setAnswerForm] = useState<AnswerUploadRequest>(
         initialData ? {
             answerId: initialData.id,
@@ -36,7 +37,7 @@ const AnswerForm = (props: AnswerPostFormProps) => {
         closePostAnswerForm()
     }
     const postTheAnswer = async () => {
-        const request: AnswerUploadRequest = { content: answerForm.content, questionId };
+        const request: AnswerUploadRequest = { content: answerForm.content, questionId, answerId: answerId };
         try {
 
            await postAnswer(request).unwrap();
