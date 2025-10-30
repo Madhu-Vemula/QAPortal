@@ -9,16 +9,20 @@ import QuestionCard from "./QuestionCard";
 import type { RootState } from "../../store/store";
 import { convertRoleToString } from "../../utils/userUtils";
 import FilterContainer from "../../components/common/FilterContainer";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ApplicationStatus } from "../../types/Enums/ApplicationStatus";
 
 const MyQuestionsList = () => {
     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
     const userRole = convertRoleToString(numericRole);
     const { data: questionsByUserResponse, isLoading } = useGetQuestionsByUserQuery();
-    const questionsList = questionsByUserResponse?.data || [];
-    const [filteredQuestionsList, setFilteredQuestionsList] = useState<QuestionResponseData[]>(questionsList);
+    const questionsList = useMemo(() => questionsByUserResponse?.data || [], [questionsByUserResponse]);
 
+    // const questionsList = questionsByUserResponse?.data || [];
+    const [filteredQuestionsList, setFilteredQuestionsList] = useState<QuestionResponseData[]>(questionsList);
+    useEffect(() => {
+        setFilteredQuestionsList(questionsList)
+    }, [questionsList])
     if (isLoading) return <Loader />
     return (
         <>
@@ -44,7 +48,7 @@ const MyQuestionsList = () => {
                         </select>
                     </div>
                     <input type="text" placeholder="Search questions..." onChange={(e) => {
-                        const searchTerm = e.target.value.toLowerCase();    
+                        const searchTerm = e.target.value.toLowerCase();
                         const filteredQuestions = questionsList?.filter((question) =>
                             question.title.toLowerCase().includes(searchTerm) ||
                             question.content.toLowerCase().includes(searchTerm)

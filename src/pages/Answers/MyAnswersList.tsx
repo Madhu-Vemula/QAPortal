@@ -9,7 +9,7 @@ import AnswerCard from "./AnswerCard";
 import type { RootState } from "../../store/store";
 import { convertRoleToString } from "../../utils/userUtils";
 import FilterContainer from "../../components/common/FilterContainer";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const buildAnswerTree = (answers: AnswerResponse[]) => {
     const map = new Map<number, AnswerResponse & { replies: AnswerResponse[] }>();
@@ -20,11 +20,16 @@ const buildAnswerTree = (answers: AnswerResponse[]) => {
     });
 
     answers.forEach(ans => {
+        const node = map.get(ans.id)!;
         if (ans.parentId) {
             const parent = map.get(ans.parentId);
-            if (parent) parent.replies.push(map.get(ans.id)!);
+            if (parent) {
+                parent.replies.push(node);
+            } else {
+                roots.push(node);
+            }
         } else {
-            roots.push(map.get(ans.id)!);
+            roots.push(node);
         }
     });
 
@@ -35,9 +40,13 @@ const MyAnswersList = () => {
     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
     const userRole = convertRoleToString(numericRole);
     const { data: answersByUserResponse, isLoading } = useGetAnswerByUserQuery();
-    const answersList = answersByUserResponse?.data || [];
+    const answersList = useMemo(() => answersByUserResponse?.data || [], [answersByUserResponse]);
     const [filteredAnswers, setFilteredAnswers] = useState<AnswerResponse[]>(answersList);
     const answerTree = buildAnswerTree(filteredAnswers);
+    useEffect(() => {
+        // update filtered answers when the source list changes
+        setFilteredAnswers(answersList);
+    }, [answersList]);
 
     if (isLoading) return <Loader />
     return (
