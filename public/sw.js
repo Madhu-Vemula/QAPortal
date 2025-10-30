@@ -6,7 +6,7 @@ self.addEventListener('push', event => {
     // Normalize keys
     const title = data.title || data.Title || 'Notification';
     const body = data.body || data.Body || 'You have a new notification';
-    const icon = data.icon || '/vite.svg';
+    const icon = '/src/assets/images/paltech_logo_new.svg';
 
     const options = { body, icon };
 
