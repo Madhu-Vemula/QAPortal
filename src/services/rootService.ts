@@ -8,10 +8,10 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL as string;
  */
 const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,
-  prepareHeaders: (headers) => {
-    const token = localStorage.getItem("token");
+  prepareHeaders: async (headers) => {
+    const token = await cookieStore.get("token");
     if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
+      headers.set("Authorization", `Bearer ${token.value}`);
     }
     return headers;
   },
