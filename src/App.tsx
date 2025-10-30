@@ -23,7 +23,7 @@ function App() {
     skip: !token,
   });
   useEffect(() => {
-    document.title = "Q&A Portal";
+    document.title = "CodeVerse Portal";
     const refetchUser = async () => {
       if (token) {
         try {

@@ -92,8 +92,6 @@ const QuestionCard = (props: QuestionCardProps) => {
             <div
                 className="card"
                 onClick={() => openSpecificQuestion(question.id)}
-                role="button"
-                tabIndex={0}
                 aria-label={`View details for ${question.title}`}
             >
                 <div className="card-header">
