@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { UserData } from "../types/User/user";
 import { authApi } from "../services/authService";
-
+import Cookies from "js-cookie";
 interface AuthState {
     token: string | null;
     user: UserData | null;
@@ -20,7 +20,7 @@ const authSlice = createSlice({
         setToken: (state, action: PayloadAction<string>) => {
             state.token = action.payload;
             state.isAuthenticated = true;
-            cookieStore.set("token", action.payload);
+            Cookies.set("token", action.payload);
         },
         logout: (state) => {
             state.token = null;

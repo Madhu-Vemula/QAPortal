@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 const baseUrl = import.meta.env.VITE_API_BASE_URL as string;
 
 /**
@@ -8,10 +9,10 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL as string;
  */
 const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,
-  prepareHeaders: async (headers) => {
-    const token = await cookieStore.get("token");
+  prepareHeaders:  (headers) => {
+    const token =  Cookies.get("token");
     if (token) {
-      headers.set("Authorization", `Bearer ${token.value}`);
+      headers.set("Authorization", `Bearer ${token}`);
     }
     return headers;
   },
