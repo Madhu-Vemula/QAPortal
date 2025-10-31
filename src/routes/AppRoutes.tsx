@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 import { convertRoleToString } from "../utils/userUtils";
+import Loader from "../components/common/Loader";
 /**
  * @function AppRoutes
  * @description Defines all application routes with role-based protection and corresponding components.
@@ -20,6 +21,7 @@ const AppRoutes: React.FC = (): React.JSX.Element => {
     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
     const userRole = convertRoleToString(numericRole);
     const userEmail = useSelector((state: RootState) => state.auth.user?.email);
+    const showLoader = useSelector((state: RootState) => state.auth.showLoader);
 
     const dashboardPath =
         userRole === RoleConstants.ADMIN
@@ -34,6 +36,7 @@ const AppRoutes: React.FC = (): React.JSX.Element => {
             else navigate("/login", { replace: true });
         }
     }, [userEmail, userRole, navigate, dashboardPath]);
+    if (showLoader) return <Loader />;
 
     return (
         <Routes>

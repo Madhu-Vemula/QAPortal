@@ -6,12 +6,14 @@ interface AuthState {
     token: string | null;
     user: UserData | null;
     isAuthenticated: boolean;
+    showLoader: boolean;
 }
 
 const initialState: AuthState = {
     token: Cookies.get("token")?.valueOf() || null,
     user: null,
     isAuthenticated: !!Cookies.get("token"),
+    showLoader: false,
 };
 const authSlice = createSlice({
     name: "auth",
@@ -34,17 +36,25 @@ const authSlice = createSlice({
             authApi.endpoints.getCurrentUser.matchFulfilled,
             (state, { payload }) => {
                 state.user = payload.data,
-                    state.isAuthenticated = true
+                    state.isAuthenticated = true,
+                    state.showLoader = false
             }
         ),
+            builder.addMatcher(
+                authApi.endpoints.getCurrentUser.matchPending,
+                (state) => {
+                    state.showLoader = true;
+                }
+            ),
             builder.addMatcher(
                 authApi.endpoints.getCurrentUser.matchRejected,
                 (state) => {
                     state.user = null,
                         state.isAuthenticated = false
+                    state.showLoader = false
                 }
             )
     }
 })
-export const {setToken,logout}=authSlice.actions;
+export const { setToken, logout } = authSlice.actions;
 export default authSlice.reducer
