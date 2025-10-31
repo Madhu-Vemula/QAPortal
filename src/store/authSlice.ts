@@ -9,9 +9,9 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-    token: localStorage.getItem("token"),
+    token: Cookies.get("token")?.valueOf() || null,
     user: null,
-    isAuthenticated: !!localStorage.getItem("token"),
+    isAuthenticated: !!Cookies.get("token"),
 };
 const authSlice = createSlice({
     name: "auth",
