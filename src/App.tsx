@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { useGetCurrentUserQuery } from "./services/authService";
 import type { RootState } from "./store/store";
 import { logout } from "./store/authSlice";
+import useSubscribeToNotification from "./hooks/useSubscribeToNotification";
 
 function App() {
   const token = useSelector((state: RootState) => state.auth.token);
@@ -22,8 +23,10 @@ function App() {
   const { refetch } = useGetCurrentUserQuery(undefined, {
     skip: !token,
   });
+  const subscribeToNotification = useSubscribeToNotification()
   useEffect(() => {
     document.title = "CodeVerse Portal";
+    subscribeToNotification()
     const refetchUser = async () => {
       if (token) {
         try {
