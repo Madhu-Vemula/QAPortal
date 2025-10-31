@@ -13,7 +13,7 @@ const initialState: AuthState = {
     token: Cookies.get("token")?.valueOf() || null,
     user: null,
     isAuthenticated: !!Cookies.get("token"),
-    showLoader: false,
+    showLoader: true,
 };
 const authSlice = createSlice({
     name: "auth",
@@ -40,12 +40,6 @@ const authSlice = createSlice({
                     state.showLoader = false
             }
         ),
-            builder.addMatcher(
-                authApi.endpoints.getCurrentUser.matchPending,
-                (state) => {
-                    state.showLoader = true;
-                }
-            ),
             builder.addMatcher(
                 authApi.endpoints.getCurrentUser.matchRejected,
                 (state) => {

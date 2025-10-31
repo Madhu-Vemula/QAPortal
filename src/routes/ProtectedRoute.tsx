@@ -5,6 +5,7 @@ import UnAuthorized from "../pages/Error/UnAuthorized";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 import { convertRoleToString } from "../utils/userUtils";
+import Loader from "../components/common/Loader";
 
 /**
  * @function ProtectedRoute
@@ -16,6 +17,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }): Reac
     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
     const userRole=convertRoleToString(numericRole)
     const userEmail = useSelector((state: RootState) => state.auth.user?.email);
+    const showLoader = useSelector((state: RootState) => state.auth.showLoader);
+    if (showLoader) return <Loader />;
     if (!userEmail) return <Navigate to="/login" />;
 
     if (userRole !== role) return <UnAuthorized />;
