@@ -13,13 +13,15 @@ import Loader from "../components/common/Loader";
  * @param {ProtectedRouteProps} param0 - Contains children components and the required role for access.
  * @returns {React.JSX.Element}
  */
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }): React.JSX.Element => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }: ProtectedRouteProps): React.JSX.Element => {
     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
     const userRole=convertRoleToString(numericRole)
     const userEmail = useSelector((state: RootState) => state.auth.user?.email);
     const showLoader = useSelector((state: RootState) => state.auth.showLoader);
+    const cookieToken = useSelector((state: RootState) => state.auth.token);
+
+    if (!userEmail && !cookieToken) return <Navigate to="/login" />;
     if (showLoader) return <Loader />;
-    if (!userEmail) return <Navigate to="/login" />;
 
     if (userRole !== role) return <UnAuthorized />;
     return <>{children}</>;

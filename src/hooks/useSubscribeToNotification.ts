@@ -35,7 +35,6 @@ const useSubscribeToNotification = () => {
     };
 
     await addSubscription(pushSubscription);
-    console.log("Subscription saved successfully!");
   };
 
   return subscribeToNotification;
