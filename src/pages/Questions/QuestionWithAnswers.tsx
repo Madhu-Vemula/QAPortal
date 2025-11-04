@@ -16,9 +16,9 @@ import type { RootState } from "../../store/store";
 import { convertRoleToString } from "../../utils/userUtils";
 
 const QuestionWithAnswers = () => {
-  const numericRole = useSelector((state: RootState) => state.auth.user?.role);
-          const userRole = convertRoleToString(numericRole);
-      const isApproved=useSelector((state:RootState)=>state.auth.user?.isApproved);
+    const numericRole = useSelector((state: RootState) => state.auth.user?.role);
+    const userRole = convertRoleToString(numericRole);
+    const isApproved = useSelector((state: RootState) => state.auth.user?.isApproved);
     const { id } = useParams<{ id: string }>();
     const parsedQuestionId = parseInt(id ?? "");
     const { data: questionResponse } = useGetQuestionQuery(parsedQuestionId);

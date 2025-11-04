@@ -15,15 +15,17 @@ import Loader from "../components/common/Loader";
  */
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }: ProtectedRouteProps): React.JSX.Element => {
     const numericRole = useSelector((state: RootState) => state.auth.user?.role);
-    const userRole=convertRoleToString(numericRole)
+    const userRole = convertRoleToString(numericRole)
     const userEmail = useSelector((state: RootState) => state.auth.user?.email);
     const showLoader = useSelector((state: RootState) => state.auth.showLoader);
     const cookieToken = useSelector((state: RootState) => state.auth.token);
 
+    if ((cookieToken && !userEmail) || showLoader) return <Loader />;
     if (!userEmail && !cookieToken) return <Navigate to="/login" />;
-    if (showLoader) return <Loader />;
 
-    if (userRole !== role) return <UnAuthorized />;
+    if (userRole !== role) {
+        return <UnAuthorized />;
+    }
     return <>{children}</>;
 };
 

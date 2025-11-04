@@ -5,6 +5,7 @@ const useSubscribeToNotification = () => {
   const [addSubscription] = useAddSubscriptionMutation();
 
   const subscribeToNotification = async () => {
+    try {
     const registration = await navigator.serviceWorker.ready;
 
     let permission = Notification.permission;
@@ -33,8 +34,11 @@ const useSubscribeToNotification = () => {
         auth: subJson.keys?.auth || "",
       },
     };
-
-    await addSubscription(pushSubscription);
+    
+      await addSubscription(pushSubscription).unwrap();
+    } catch (error) { 
+      console.error("Failed to subscribe to notifications:", error);
+    }
   };
 
   return subscribeToNotification;

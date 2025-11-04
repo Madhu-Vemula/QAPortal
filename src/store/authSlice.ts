@@ -35,20 +35,20 @@ const authSlice = createSlice({
         builder.addMatcher(
             authApi.endpoints.getCurrentUser.matchFulfilled,
             (state, { payload }) => {
-                state.user = payload.data,
-                    state.isAuthenticated = true,
-                    state.showLoader = false
+                state.user = payload.data;
+                state.isAuthenticated = true;
+                state.showLoader = false;
             }
-        ),
-            builder.addMatcher(
-                authApi.endpoints.getCurrentUser.matchRejected,
-                (state) => {
-                    state.user = null,
-                        state.isAuthenticated = false
-                    state.showLoader = false
-                }
-            )
+        );
+        builder.addMatcher(
+            authApi.endpoints.getCurrentUser.matchRejected,
+            (state) => {
+               state.user = null;
+               state.isAuthenticated = false;
+               state.showLoader = false;
+            }
+        );
     }
-})
+    });
 export const { setToken, logout } = authSlice.actions;
 export default authSlice.reducer

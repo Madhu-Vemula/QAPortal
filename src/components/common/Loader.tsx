@@ -5,7 +5,7 @@
  */
 const Loader: React.FC = (): React.JSX.Element => {
     return (
-        <div className="loader-containter">
+        <div className="loader-container">
             <div className="loader"></div>
         </div>
     );
