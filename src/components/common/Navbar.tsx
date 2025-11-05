@@ -52,11 +52,11 @@ const Navbar: React.FC = (): React.JSX.Element => {
                     <NavLink to={`/${userRole}/home`} className="nav-link">Home</NavLink>
                     {userRole == RoleConstants.ADMIN && (
                         <>
-                            <NavLink to={`/${userRole}/pending-list`} className="nav-link">Admin Approval List</NavLink>
-                            <NavLink to={`/${userRole}/question-post-pending-list`} className="nav-link">Question Approval List</NavLink>
+                            <NavLink to={`/${userRole}/pending-list`} className="nav-link">Admin Approvals</NavLink>
+                            <NavLink to={`/${userRole}/question-post-pending-list`} className="nav-link">Question Approvals</NavLink>
                         </>
                     )}
-                    <NavLink to={`/${userRole}/questions-list`} className="nav-link">Questions List</NavLink>
+                    <NavLink to={`/${userRole}/questions-list`} className="nav-link">Questions</NavLink>
                     <NavLink to={`/${userRole}/my-questions`} className="nav-link">My Questions</NavLink>
                     <NavLink to={`/${userRole}/my-answers`} className="nav-link">My Answers</NavLink>
 
@@ -75,11 +75,11 @@ const Navbar: React.FC = (): React.JSX.Element => {
                 <NavLink to={`/${userRole}/home`} className="nav-link mobile-nav-link">Home</NavLink>
                 {userRole == RoleConstants.ADMIN && (
                     <>
-                        <NavLink to={`/${userRole}/pending-list`} className="nav-link mobile-nav-link">Admin Approval List</NavLink>
-                        <NavLink to={`/${userRole}/question-post-pending-list`} className="nav-link mobile-nav-link">Question Approval List</NavLink>
+                        <NavLink to={`/${userRole}/pending-list`} className="nav-link mobile-nav-link">Admin Approvals</NavLink>
+                        <NavLink to={`/${userRole}/question-post-pending-list`} className="nav-link mobile-nav-link">Question Approvals</NavLink>
                     </>
                 )}
-                <NavLink to={`/${userRole}/questions-list`} className="nav-link mobile-nav-link">Questions List</NavLink>
+                <NavLink to={`/${userRole}/questions-list`} className="nav-link mobile-nav-link">Questions</NavLink>
                 <NavLink to={`/${userRole}/my-questions`} className="nav-link mobile-nav-link">My Questions</NavLink>
                 <NavLink to={`/${userRole}/my-answers`} className="nav-link mobile-nav-link">My Answers</NavLink>
                 <div className="nav-logout-container">
