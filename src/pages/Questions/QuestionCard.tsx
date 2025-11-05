@@ -35,6 +35,9 @@ const QuestionCard = (props: QuestionCardProps) => {
     const navigate = useNavigate();
 
     const openSpecificQuestion = (questionId: number) => {
+        if(window.location.pathname.split('/')[3] === String(questionId)) {
+            return;
+        }
         navigate(`${questionId}`);
         increaseViewCount(questionId);
     }
