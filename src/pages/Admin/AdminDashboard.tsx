@@ -30,7 +30,7 @@ const AdminDashboard: React.FC = (): React.JSX.Element => {
             <DashboardBlock
                 title={`${convertFirstLetterToUpperCase(userRole)} Dashboard`}
             >
-                <button className="button submit-btn" onClick={() => { handleAddUser() }}>
+                <button className="button submit-btn add-user-btn" onClick={() => { handleAddUser() }}>
                     Add User
                 </button>
                 {/* <SendNotificationButton /> */}

@@ -88,7 +88,7 @@ const AnswerForm = (props: AnswerPostFormProps) => {
                 name="description"
                 value={answerForm.content}
                 placeholder="Enter the description"
-                cols={30}
+                cols={100}
                 rows={10}
             >
 
