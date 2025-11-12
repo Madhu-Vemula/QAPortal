@@ -1,5 +1,5 @@
 
-import React from "react"
+import React, { type JSX } from "react"
 import type { CustomTableProps } from "../../types/customTableProps"
 
 /**
@@ -16,7 +16,7 @@ import type { CustomTableProps } from "../../types/customTableProps"
  * 
  * @returns {JSX.Element} The rendered table component.
  */
-function CustomTable<T>({ data, columns, emptyMessage = "No data Found" }: CustomTableProps<T>) { 
+function CustomTable<T>({ data, columns, emptyMessage = "No data Found" }: CustomTableProps<T>): JSX.Element { 
     return (
         <div className="custom-table-container">
             {
